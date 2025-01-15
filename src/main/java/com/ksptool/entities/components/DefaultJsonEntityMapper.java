@@ -9,7 +9,9 @@ import java.util.List;
 
 public class DefaultJsonEntityMapper implements JsonEntityMapper {
 
-    private final Gson gson = new GsonBuilder().create();
+    private final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
     @Override
     public String toJson(Object obj) {

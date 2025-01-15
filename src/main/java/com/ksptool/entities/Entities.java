@@ -13,16 +13,16 @@ public class Entities {
     private static EntityOperation eo;
 
     public static EntityMapper getObjectMapper() {
-        return eo.getObjectMapper();
+        return getGlobalInstance().getObjectMapper();
     }
     public static void setObjectMapper(EntityMapper m) {
-        eo.setObjectMapper(m);
+        getGlobalInstance().setObjectMapper(m);
     }
     public static void setJsonEntityMapper(JsonEntityMapper m) {
-        eo.setJem(m);
+        getGlobalInstance().setJem(m);
     }
     public static JsonEntityMapper getJsonEntityMapper() {
-        return eo.getJsonEntityMapper();
+        return getGlobalInstance().getJsonEntityMapper();
     }
 
     public static synchronized EntityOperation getGlobalInstance(){
@@ -42,7 +42,7 @@ public class Entities {
             var ret = new ArrayList<T>();
             for(var po : source){
                 var vo = target.getDeclaredConstructor().newInstance();
-                eo.assign(po, vo);
+                getGlobalInstance().assign(po, vo);
                 ret.add(vo);
             }
             return ret;
@@ -62,7 +62,7 @@ public class Entities {
                 return instance;
             }
 
-            eo.assign(source, instance);
+            getGlobalInstance().assign(source, instance);
             return instance;
 
         }catch (Exception e){
@@ -73,16 +73,16 @@ public class Entities {
     }
 
     public static void as(Object source, Object target){
-        eo.assign(source, target);
+        getGlobalInstance().assign(source, target);
     }
 
     public static void assign(Object source, Object target){
-        eo.assign(source, target);
+        getGlobalInstance().assign(source, target);
     }
 
     public static <T> T fromJson(String json,Class<T> target){
         try{
-            return eo.fromJson(json,target);
+            return getGlobalInstance().fromJson(json,target);
         }catch (Exception e){
             return null;
         }
@@ -95,14 +95,14 @@ public class Entities {
         }
 
         try{
-            return eo.fromJsonArray(json, target);
+            return getGlobalInstance().fromJsonArray(json, target);
         }catch (Exception e){
             return new ArrayList<>();
         }
     }
 
     public static String toJson(Object object){
-        return eo.toJson(object);
+        return getGlobalInstance().toJson(object);
     }
 
 
