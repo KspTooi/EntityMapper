@@ -1,4 +1,4 @@
-package com.ksptool.entities;
+package com.ksptool.entities.utils;
 
 public class Any<T>{
 

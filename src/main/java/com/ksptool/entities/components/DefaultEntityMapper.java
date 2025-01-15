@@ -1,16 +1,16 @@
-package com.ksptool.entities;
+package com.ksptool.entities.components;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MappingContext;
 
-public class DefaultObjectMapper implements ObjectMapper {
+public class DefaultEntityMapper implements EntityMapper {
 
 
     private static final ModelMapper mMapper = new ModelMapper();
 
-    public DefaultObjectMapper() {
+    public DefaultEntityMapper() {
         init();
     }
 

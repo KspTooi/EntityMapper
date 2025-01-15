@@ -1,6 +1,5 @@
 package com.ksptool.entities;
 
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class StrConditionMap<MV> {
      * @return SCM
      */
     public StrConditionMap<MV> eq(String matchVal, MV appendVal){
-        if(StringUtils.isBlank(targetFiled)){
+        if(Strings.isBlank(targetFiled)){
             return this;
         }
         if(targetVal.equals(matchVal)){
@@ -66,7 +65,7 @@ public class StrConditionMap<MV> {
      * @return SCM
      */
     public StrConditionMap<MV> contains(String matchVal, MV appendVal){
-        if(StringUtils.isBlank(targetFiled)){
+        if(Strings.isBlank(targetFiled)){
             return this;
         }
         if(targetVal.contains(matchVal)){

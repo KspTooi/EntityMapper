@@ -4,35 +4,41 @@ import com.ksptool.entities.components.DefaultEntityMapper;
 import com.ksptool.entities.components.DefaultJsonEntityMapper;
 import com.ksptool.entities.components.EntityMapper;
 import com.ksptool.entities.components.JsonEntityMapper;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Entities {
+public class EntityOperation {
 
-    private static EntityOperation eo;
+    private EntityMapper em;
+    private JsonEntityMapper jem;
 
-    public static EntityMapper getObjectMapper() {
-        return eo.getObjectMapper();
-    }
-    public static void setObjectMapper(EntityMapper m) {
-        eo.setObjectMapper(m);
-    }
-    public static void setJsonEntityMapper(JsonEntityMapper m) {
-        eo.setJem(m);
-    }
-    public static JsonEntityMapper getJsonEntityMapper() {
-        return eo.getJsonEntityMapper();
-    }
-
-    public static synchronized EntityOperation getGlobalInstance(){
-        if(eo == null){
-            eo = new EntityOperation(new DefaultEntityMapper(),new DefaultJsonEntityMapper());
+    public EntityOperation(EntityMapper entityMapper,JsonEntityMapper jsonEntityMapper){
+        if(entityMapper == null){
+            throw new NullPointerException("entityMapper is null");
         }
-        return eo;
+        this.em = entityMapper;
+        this.jem = jsonEntityMapper;
+    }
+    public EntityMapper getObjectMapper() {
+        return em;
+    }
+    public void setObjectMapper(EntityMapper m) {
+        if(m != null){
+            em = m;
+        }
+    }
+    public void setJem(JsonEntityMapper m) {
+        if(m != null){
+            jem = m;
+        }
+    }
+    public JsonEntityMapper getJsonEntityMapper() {
+        return jem;
     }
 
-    public static <T> List<T> as(List<?> source,Class<T> target){
+    public <T> List<T> as(List<?> source, Class<T> target){
 
         if(source == null){
             return new ArrayList<>();
@@ -42,7 +48,7 @@ public class Entities {
             var ret = new ArrayList<T>();
             for(var po : source){
                 var vo = target.getDeclaredConstructor().newInstance();
-                eo.assign(po, vo);
+                em.assign(po, vo);
                 ret.add(vo);
             }
             return ret;
@@ -52,19 +58,15 @@ public class Entities {
         }
     }
 
-    public static <T> T as(Object source,Class<T> target){
 
+    public <T> T as(Object source,Class<T> target){
         try{
-
             var instance = target.getDeclaredConstructor().newInstance();
-
             if(source == null){
                 return instance;
             }
-
-            eo.assign(source, instance);
+            em.assign(source, instance);
             return instance;
-
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -72,41 +74,37 @@ public class Entities {
 
     }
 
-    public static void as(Object source, Object target){
-        eo.assign(source, target);
+    public void as(Object source, Object target){
+        em.assign(source, target);
     }
 
-    public static void assign(Object source, Object target){
-        eo.assign(source, target);
+    public void assign(Object source, Object target){
+        em.assign(source, target);
     }
 
-    public static <T> T fromJson(String json,Class<T> target){
+    public <T> T fromJson(String json,Class<T> target){
         try{
-            return eo.fromJson(json,target);
+            return jem.fromJson(json,target);
         }catch (Exception e){
             return null;
         }
     }
 
-    public static <T> List<T> fromJsonArray(String json,Class<T> target){
+    public <T> List<T> fromJsonArray(String json,Class<T> target){
 
         if(Strings.isBlank(json)){
             return new ArrayList<>();
         }
 
         try{
-            return eo.fromJsonArray(json, target);
+            return jem.fromJsonArray(json, target);
         }catch (Exception e){
             return new ArrayList<>();
         }
     }
 
-    public static String toJson(Object object){
-        return eo.toJson(object);
+    public String toJson(Object object){
+        return jem.toJson(object);
     }
-
-
-
-
 
 }
