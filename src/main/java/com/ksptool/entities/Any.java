@@ -88,6 +88,13 @@ public class Any<T>{
         return eo.as((List<?>)this.content,target);
     }
 
+    public AnyMatchUpdate matchUpdate(String updateField){
+        return new AnyMatchUpdate(this,updateField);
+    }
+
+    public AnyMatchUpdate matchUpdate(String updateField,String matchValue){
+        return new AnyMatchUpdate(this,updateField,matchValue);
+    }
 
 
 
