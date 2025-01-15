@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +33,7 @@ public class AnyTest {
         s.setAge(100);
         s.setGender(135346L);
 
-        var vo = Any.of(s).as(TestStaffVo.class);
+        TestStaffVo vo = Any.of(s).as(TestStaffVo.class);
 
         assertEquals("Steve", vo.getName());
         assertEquals(100, vo.getAge());
@@ -129,7 +127,24 @@ public class AnyTest {
 
         assertEquals("JackHorse", vos.get(3).getName());
     }
-    
+
+    @Test
+    public void asymmetricMapping(){
+
+        TestStaff o = new TestStaff();
+        o.setStaffId(1000000L);
+        o.setName("Steve");
+
+        TestStaffVo vo = Any
+                .of(o)
+                .to(TestStaffVo.class)
+                .val("id", o.getStaffId())
+                .get();
+
+        assertEquals("Steve", vo.getName());
+        assertEquals("1000000", vo.getId());
+    }
+
 
 
 

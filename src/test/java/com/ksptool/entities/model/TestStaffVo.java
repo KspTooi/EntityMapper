@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class TestStaffVo {
 
+    private String id;
+
     private String name;
 
     private Integer age;
@@ -42,5 +44,13 @@ public class TestStaffVo {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

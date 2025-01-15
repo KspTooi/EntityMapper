@@ -88,6 +88,14 @@ public class Any<T>{
         return eo.as((List<?>)this.content,target);
     }
 
+    public <TARGET> Any<TARGET> to(Class<TARGET> target){
+        return Any.of(this.as(target));
+    }
+
+    public <TARGET> Any<List<TARGET>> toList(Class<TARGET> target){
+        return Any.of(this.asList(target));
+    }
+
     public AnyMatchUpdate matchUpdate(String updateField){
         return new AnyMatchUpdate(this,updateField);
     }
@@ -96,7 +104,8 @@ public class Any<T>{
         return new AnyMatchUpdate(this,updateField,matchValue);
     }
 
-
-
+    public EntityOperation getEntityOperation(){
+        return this.eo;
+    }
 
 }

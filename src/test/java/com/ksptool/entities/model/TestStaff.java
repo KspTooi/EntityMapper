@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class TestStaff {
 
+    private Long staffId;
+
     private String name;
 
     private Integer age;
@@ -42,5 +44,13 @@ public class TestStaff {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 }
