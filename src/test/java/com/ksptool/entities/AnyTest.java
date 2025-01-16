@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnyTest {
 
@@ -143,6 +145,12 @@ public class AnyTest {
 
         assertEquals("Steve", vo.getName());
         assertEquals("1000000", vo.getId());
+    }
+
+    @Test
+    public void ofNullable(){
+        Any<?> any = Any.ofNullable(null);
+        assertTrue(any.isNull());
     }
 
 

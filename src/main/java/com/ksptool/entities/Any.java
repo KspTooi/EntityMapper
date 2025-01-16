@@ -25,6 +25,9 @@ public class Any<T>{
         }
         return new Any<T>(t);
     }
+    public static <T> Any<T> ofNullable(T t){
+        return new Any<>(t);
+    }
 
     public static <T> Any<T> of(T t,EntityOperation eo){
         if(t == null){
@@ -106,6 +109,10 @@ public class Any<T>{
 
     public EntityOperation getEntityOperation(){
         return this.eo;
+    }
+
+    public boolean isNull(){
+        return this.content==null;
     }
 
 }
