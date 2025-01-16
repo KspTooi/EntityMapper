@@ -13,6 +13,7 @@ public class Any<T>{
 
     private final T content;
     private final Map<String,Object> putMap = new ConcurrentHashMap<>();
+    private final Map<String,Object> getMap = new ConcurrentHashMap<>();
     private final EntityOperation eo;
 
 
@@ -258,5 +259,40 @@ public class Any<T>{
     public boolean isNull(){
         return this.content==null;
     }
+
+    public Any<T> assign(Object object){
+
+        if(object == null){
+            return this;
+        }
+
+        eo.assign(object,content);
+        return this;
+    }
+
+    public String get(String field){
+        putMap.clear();
+        eo.assign(content,putMap);
+        Object value = putMap.get(field);
+        if(value == null){
+            return null;
+        }
+        return value.toString();
+    }
+
+    public <RETURN> RETURN get(String field,Class<RETURN> tClass){
+        putMap.clear();
+        eo.assign(content,putMap);
+        Object value = putMap.get(field);
+        if(value == null){
+            return null;
+        }
+        if (tClass.isInstance(value)) {
+            return (RETURN)value;
+        } else {
+            return null;
+        }
+    }
+
 
 }

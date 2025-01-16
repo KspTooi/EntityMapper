@@ -78,6 +78,8 @@ public class AnyTest {
         }
 
         List<TestStaffVo> ret = Any.of(list).val("name", "JackHorse").asList(TestStaffVo.class);
+
+
         assertEquals(32, ret.size());
         assertEquals("JackHorse", ret.get(0).getName());
     }
@@ -137,8 +139,7 @@ public class AnyTest {
         o.setStaffId(1000000L);
         o.setName("Steve");
 
-        TestStaffVo vo = Any
-                .of(o)
+        TestStaffVo vo = Any.of(o)
                 .to(TestStaffVo.class)
                 .val("id", o.getStaffId())
                 .get();
@@ -152,7 +153,6 @@ public class AnyTest {
         Any<?> any = Any.ofNullable(null);
         assertTrue(any.isNull());
     }
-
 
 
 
