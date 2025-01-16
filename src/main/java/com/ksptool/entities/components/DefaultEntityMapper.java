@@ -22,19 +22,19 @@ public class DefaultEntityMapper implements EntityMapper {
 
     public void init(){
 
-        var toStringConverter = new Converter<Integer, String>() {
+        Converter<Integer, String> toStringConverter = new Converter<Integer, String>() {
             public String convert(MappingContext<Integer, String> context) {
                 return context.getSource() != null ? context.getSource().toString() : null;
             }
         };
 
-        var longToStringConverter = new Converter<Long, String>() {
+        Converter<Long, String> longToStringConverter = new Converter<Long, String>() {
             public String convert(MappingContext<Long, String> context) {
                 return context.getSource() != null ? context.getSource().toString() : null;
             }
         };
 
-        var strToDateConverter = new Converter<String, Date>() {
+        Converter<String, Date> strToDateConverter = new Converter<String, Date>() {
             public Date convert(MappingContext<String, Date> context) {
                 try {
                     return context.getSource() != null ? sdf.parse(context.getSource()) : null;

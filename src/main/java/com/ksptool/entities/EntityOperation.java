@@ -45,9 +45,9 @@ public class EntityOperation {
         }
 
         try{
-            var ret = new ArrayList<T>();
-            for(var po : source){
-                var vo = target.getDeclaredConstructor().newInstance();
+            List<T> ret = new ArrayList<T>();
+            for(Object po : source){
+                T vo = target.getDeclaredConstructor().newInstance();
                 em.assign(po, vo);
                 ret.add(vo);
             }
@@ -61,7 +61,7 @@ public class EntityOperation {
 
     public <T> T as(Object source,Class<T> target){
         try{
-            var instance = target.getDeclaredConstructor().newInstance();
+            T instance = target.getDeclaredConstructor().newInstance();
             if(source == null){
                 return instance;
             }

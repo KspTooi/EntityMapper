@@ -1,15 +1,12 @@
 package com.ksptool.entities;
 
-
 import com.ksptool.entities.model.TestBigDecimal;
 import com.ksptool.entities.model.TestBigDecimalVo;
 import com.ksptool.entities.model.TestDate;
 import com.ksptool.entities.model.TestDateVo;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.util.Date;
-
 import static com.ksptool.entities.Entities.as;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

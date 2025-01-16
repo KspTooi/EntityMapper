@@ -39,9 +39,9 @@ public class Entities {
         }
 
         try{
-            var ret = new ArrayList<T>();
-            for(var po : source){
-                var vo = target.getDeclaredConstructor().newInstance();
+            List<T> ret = new ArrayList<T>();
+            for(Object po : source){
+                T vo = target.getDeclaredConstructor().newInstance();
                 getGlobalInstance().assign(po, vo);
                 ret.add(vo);
             }
@@ -56,7 +56,7 @@ public class Entities {
 
         try{
 
-            var instance = target.getDeclaredConstructor().newInstance();
+            T instance = target.getDeclaredConstructor().newInstance();
 
             if(source == null){
                 return instance;

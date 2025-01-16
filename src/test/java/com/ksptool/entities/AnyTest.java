@@ -99,7 +99,7 @@ public class AnyTest {
 
         assertEquals("Dean", vo.getName());
 
-        var matchValue = "test";
+        String matchValue = "test";
 
         TestStaffVo vo1 = Any.of(s)
                 .matchUpdate("name", matchValue)

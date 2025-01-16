@@ -3,6 +3,8 @@ package com.ksptool.entities;
 
 import com.ksptool.entities.components.DefaultEntityMapper;
 import com.ksptool.entities.components.DefaultJsonEntityMapper;
+import com.ksptool.entities.components.EntityMapper;
+import com.ksptool.entities.components.JsonEntityMapper;
 import com.ksptool.entities.model.TestJsonTarget;
 import com.ksptool.entities.model.TestStaff;
 import com.ksptool.entities.model.TestStaffVo;
@@ -22,8 +24,8 @@ public class FunctionTest {
 
     @Test
     void tSetObjectMapper() {
-        var originalMapper = Entities.getObjectMapper();
-        var newMapper = new DefaultEntityMapper();
+        EntityMapper originalMapper = Entities.getObjectMapper();
+        DefaultEntityMapper newMapper = new DefaultEntityMapper();
         Entities.setObjectMapper(newMapper);
         assertEquals(newMapper, Entities.getObjectMapper());
         assertNotEquals(originalMapper, Entities.getObjectMapper());
@@ -31,8 +33,8 @@ public class FunctionTest {
 
     @Test
     void testSetJsonEntityMapper() {
-        var originalMapper = Entities.getJsonEntityMapper();
-        var newMapper = new DefaultJsonEntityMapper();
+        JsonEntityMapper originalMapper = Entities.getJsonEntityMapper();
+        DefaultJsonEntityMapper newMapper = new DefaultJsonEntityMapper();
         Entities.setJsonEntityMapper(newMapper);
         assertEquals(newMapper, Entities.getJsonEntityMapper());
         assertNotEquals(originalMapper, Entities.getJsonEntityMapper());
