@@ -1,7 +1,5 @@
 package com.ksptool.entities;
 
-import com.ksptool.entities.components.DefaultEntityMapper;
-import com.ksptool.entities.components.DefaultJsonEntityMapper;
 import com.ksptool.entities.components.EntityMapper;
 import com.ksptool.entities.components.JsonEntityMapper;
 
@@ -21,15 +19,15 @@ public class EntityOperation {
         this.em = entityMapper;
         this.jem = jsonEntityMapper;
     }
-    public EntityMapper getObjectMapper() {
+    public EntityMapper getEntityMapper() {
         return em;
     }
-    public void setObjectMapper(EntityMapper m) {
+    public void setEntityMapper(EntityMapper m) {
         if(m != null){
             em = m;
         }
     }
-    public void setJem(JsonEntityMapper m) {
+    public void setJsonEntityMapper(JsonEntityMapper m) {
         if(m != null){
             jem = m;
         }

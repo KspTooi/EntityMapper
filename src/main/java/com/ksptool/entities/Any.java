@@ -2,6 +2,8 @@ package com.ksptool.entities;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * A generic container class that holds an object of type T and provides utility methods for manipulating and transforming the object.
@@ -15,7 +17,6 @@ public class Any<T>{
     private final Map<String,Object> putMap = new ConcurrentHashMap<>();
     private final Map<String,Object> getMap = new ConcurrentHashMap<>();
     private final EntityOperation eo;
-
 
     /**
      * Constructs an Any object with the specified content and uses the global EntityOperation instance.
@@ -129,43 +130,6 @@ public class Any<T>{
     }
 
     /**
-     * Assigns the specified value to the specified key in the internal map and updates the content object if it is a List or Map.
-     * If the content object is neither a List nor a Map, the internal map is assigned to the content object using the EntityOperation instance.
-     * <p>
-     * 将指定的值赋给内部映射中指定的键，并在内容对象为 List 或 Map 时更新内容对象。
-     * 如果内容对象既不是 List 也不是 Map，则使用 EntityOperation 实例将内部映射赋给内容对象。
-     * @param k The key to which the value is assigned.  分配值的键。
-     * @param v The value to be assigned. 要分配的值。
-     * @return The current Any object. 当前的 Any 对象。
-     */
-    public Any<T> val(String k,Object v){
-
-        try{
-
-            putMap.put(k,v);
-
-            if(content instanceof List){
-                for(Object item : (List<?>)content){
-                    eo.assign(putMap,item);
-                }
-                return this;
-            }
-
-            if(content instanceof Map){
-                ((Map<String, Object>) content).put(k,v);
-                return this;
-            }
-
-            eo.assign(putMap,content);
-
-        }finally {
-            putMap.clear();
-        }
-
-        return this;
-    }
-
-    /**
      * Converts the content object to the specified target class.
      * <p>
      * 将内容对象转换为指定的目標类。
@@ -187,6 +151,13 @@ public class Any<T>{
      */
     public <R> List<R> asList(Class<R> target){
         if(!(content instanceof List)){
+
+            if(target.isInstance(content)){
+                List<R> ret = new ArrayList<>();
+                ret.add((R) content);
+                return ret;
+            }
+
             return Collections.emptyList();
         }
         return eo.as((List<?>)this.content,target);
@@ -260,6 +231,7 @@ public class Any<T>{
         return this.content==null;
     }
 
+
     public Any<T> assign(Object object){
 
         if(object == null){
@@ -270,17 +242,49 @@ public class Any<T>{
         return this;
     }
 
-    public String get(String field){
-        putMap.clear();
-        eo.assign(content,putMap);
-        Object value = putMap.get(field);
-        if(value == null){
-            return null;
+
+    /**
+     * Assigns the specified value to the specified key in the internal map and updates the content object if it is a List or Map.
+     * If the content object is neither a List nor a Map, the internal map is assigned to the content object using the EntityOperation instance.
+     * <p>
+     * 将指定的值赋给内部映射中指定的键，并在内容对象为 List 或 Map 时更新内容对象。
+     * 如果内容对象既不是 List 也不是 Map，则使用 EntityOperation 实例将内部映射赋给内容对象。
+     * @param k The key to which the value is assigned.  分配值的键。
+     * @param v The value to be assigned. 要分配的值。
+     * @return The current Any object. 当前的 Any 对象。
+     */
+    public Any<T> val(String k,Object v){
+
+        try{
+
+            putMap.put(k,v);
+
+            if(content instanceof List){
+                for(Object item : (List<?>)content){
+                    eo.assign(putMap,item);
+                }
+                return this;
+            }
+
+            if(content instanceof Map){
+                ((Map<String, Object>) content).put(k,v);
+                return this;
+            }
+
+            eo.assign(putMap,content);
+
+        }finally {
+            putMap.clear();
         }
-        return value.toString();
+
+        return this;
     }
 
-    public <RETURN> RETURN get(String field,Class<RETURN> tClass){
+    public String val(String field){
+        return ObjectUtils.getPropertyValue(content,field).toString();
+    }
+
+    public <RETURN> RETURN val(String field,Class<RETURN> tClass){
         putMap.clear();
         eo.assign(content,putMap);
         Object value = putMap.get(field);
@@ -294,5 +298,13 @@ public class Any<T>{
         }
     }
 
+    public <R> R val(Function<T, R> getter) {
+        return getter.apply(content);
+    }
+
+    public <I> Any<T> val(BiConsumer<T, I> bi,I i) {
+        bi.accept(content,i);
+        return this;
+    }
 
 }

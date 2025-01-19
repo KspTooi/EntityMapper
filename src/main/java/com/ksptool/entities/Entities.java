@@ -25,7 +25,7 @@ public class Entities {
      * @return The {@link EntityMapper} instance. {@link EntityMapper} 实例。
      */
     public static EntityMapper getObjectMapper() {
-        return getGlobalInstance().getObjectMapper();
+        return getGlobalInstance().getEntityMapper();
     }
 
     /**
@@ -35,7 +35,7 @@ public class Entities {
      * @param m The {@link EntityMapper} instance to set. 要设置的 {@link EntityMapper} 实例。
      */
     public static void setObjectMapper(EntityMapper m) {
-        getGlobalInstance().setObjectMapper(m);
+        getGlobalInstance().setEntityMapper(m);
     }
 
     /**
@@ -45,7 +45,7 @@ public class Entities {
      * @param m The {@link JsonEntityMapper} instance to set. 要设置的 {@link JsonEntityMapper} 实例。
      */
     public static void setJsonEntityMapper(JsonEntityMapper m) {
-        getGlobalInstance().setJem(m);
+        getGlobalInstance().setJsonEntityMapper(m);
     }
 
     /**
