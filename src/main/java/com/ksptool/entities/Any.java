@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * A generic container class that holds an object of type T and provides utility methods for manipulating and transforming the object.
@@ -14,6 +16,7 @@ import java.util.function.Function;
 public class Any<T>{
 
     private final T content;
+    private final String contentType;
     private final Map<String,Object> putMap = new ConcurrentHashMap<>();
     private final Map<String,Object> getMap = new ConcurrentHashMap<>();
     private final EntityOperation eo;
@@ -28,6 +31,7 @@ public class Any<T>{
     public Any(T t){
         this.content = t;
         this.eo = Entities.getGlobalInstance();
+        this.contentType = "object";
     }
 
     /**
@@ -41,6 +45,7 @@ public class Any<T>{
     public Any(T t,EntityOperation eo){
         this.content = t;
         this.eo = eo;
+        this.contentType = "object";
     }
 
     /**
@@ -58,6 +63,81 @@ public class Any<T>{
             throw new NullPointerException();
         }
         return new Any<T>(t);
+    }
+
+    public static <T> Any<List<T>> ofList(List<T> list){
+        if(list == null){
+            return new Any<List<T>>(new ArrayList<>());
+        }
+        return new Any<List<T>>(list);
+    }
+
+    /**
+     * 将内容转换为Map类型
+     * <p>
+     * 把容器中的对象转换为指定键值类型的Map
+     * 
+     * @param <K> Map的键类型
+     * @param <V> Map的值类型
+     * @return 转换后的Map对象
+     */
+    public <K, V> Map<K, V> asMap() {
+        if (content == null) {
+            return new HashMap<>();
+        }
+        
+        if (content instanceof Map) {
+            return (Map<K, V>) content;
+        }
+        
+        Map<K, V> resultMap = new HashMap<>();
+        
+        try {
+            // 使用反射获取所有字段
+            Class<?> clazz = content.getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String fieldName = field.getName();
+                Object fieldValue = field.get(content);
+                // 只添加非null的值
+                if (fieldValue != null) {
+                    resultMap.put((K) fieldName, (V) fieldValue);
+                }
+            }
+            
+            // 获取所有getter方法
+            Method[] methods = clazz.getMethods();
+            for (Method method : methods) {
+                String methodName = method.getName();
+                
+                // 查找getter方法（以get开头，无参数，非getClass方法）
+                if (methodName.startsWith("get") && 
+                    method.getParameterCount() == 0 && 
+                    !methodName.equals("getClass")) {
+                    
+                    // 将方法名转换为属性名 (例如 getName -> name)
+                    String propertyName = methodName.substring(3, 4).toLowerCase() + 
+                                         (methodName.length() > 4 ? methodName.substring(4) : "");
+                    
+                    // 检查属性是否已经通过字段添加
+                    if (!resultMap.containsKey(propertyName)) {
+                        Object propertyValue = method.invoke(content);
+                        if (propertyValue != null) {
+                            resultMap.put((K) propertyName, (V) propertyValue);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // 发生异常时，尝试使用eo.assign作为后备方法
+            Map<String, Object> tempMap = new HashMap<>();
+            eo.assign(content, tempMap);
+            resultMap.putAll((Map<? extends K, ? extends V>) tempMap);
+        }
+        
+        return resultMap;
     }
 
     /**
@@ -306,5 +386,6 @@ public class Any<T>{
         bi.accept(content,i);
         return this;
     }
+
 
 }

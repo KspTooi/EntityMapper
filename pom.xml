@@ -6,7 +6,7 @@
 
     <groupId>com.ksptool</groupId>
     <artifactId>EntityMapper</artifactId>
-    <version>2.1R</version>
+    <version>2.1S</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

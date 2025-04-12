@@ -7,12 +7,31 @@ import org.junit.jupiter.api.Test;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnyTest {
+
+
+
+
+    @Test
+    public void objectAsMap(){
+
+        TestStaff s = new TestStaff();
+        s.setName("Steve");
+        s.setAge(100);
+        s.setGender(135346L);
+
+        Map<String, Object> map = Any.of(s).asMap();
+
+        System.out.println(map);
+    }
+
+
 
 
     @Test
