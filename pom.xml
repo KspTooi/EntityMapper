@@ -87,7 +87,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.6</version>
                         <configuration>
-                            <executable>C:\InternalApps\GnuPG\bin\gpg.exe</executable>
+                            <executable>C:\ComApp\GnuPG\bin\gpg.exe</executable>
                         </configuration>
                         <executions>
                             <execution>
